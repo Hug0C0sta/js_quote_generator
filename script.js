@@ -1,20 +1,19 @@
-var quotes;
 var quoteIndex = 0;
 const pQuote = document.querySelector("#quote");
 const hAuthor = document.querySelector("#hAuthor");
 const card = document.querySelector(".card");
 const btn = document.querySelector("button");
 
-async function getQuote() {
+async function getQuotes() {
   try {
     const response = await axios.get("https://type.fit/api/quotes");
-    quotes = response.data;
+    return response.data;
   } catch (error) {
     console.log(error);
   }
 }
 
-function setQuote() {
+function setQuote(quotes) {
   quoteIndex = Math.floor(Math.random() * quotes.length);
   pQuote.innerText = '"' + quotes[quoteIndex].text + '"';
   hAuthor.innerText =
@@ -36,9 +35,8 @@ function setQuote() {
 }
 
 async function initialize() {
-  await getQuote();
-  setQuote();
-
+  const quotes = await getQuotes();
+  setQuote(quotes);
   btn.addEventListener("click", setQuote);
 }
 
